@@ -8,13 +8,13 @@ namespace MatchThree.Components
     {
         public Cell(SpriteBatch spriteBatch, Texture2D texture) : base(spriteBatch, texture) { }
 
-        public int Width => _texture.Width;
-        public int Height => _texture.Height;
+        public int Width => Texture.Width;
+        public int Height => Texture.Height;
 
         public void Draw()
         {
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_texture, Rectangle, Color.White);
+            _spriteBatch.Draw(Texture, Rectangle, Color.White);
             _spriteBatch.End();
         }
 

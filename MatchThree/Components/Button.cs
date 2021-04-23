@@ -38,11 +38,11 @@ namespace MatchThree.Components
 
 			if (_isHovering)
 			{
-				_spriteBatch.Draw(_texture, Rectangle, HoveredColor);
+				_spriteBatch.Draw(Texture, Rectangle, HoveredColor);
 			}
 			else
 			{
-				_spriteBatch.Draw(_texture, Rectangle, MainColor);
+				_spriteBatch.Draw(Texture, Rectangle, MainColor);
 			}
 
 			_spriteBatch.DrawString(_font, _text, GetTextPosition(), Color.Black);

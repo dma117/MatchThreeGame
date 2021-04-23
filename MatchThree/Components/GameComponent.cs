@@ -9,18 +9,18 @@ namespace MatchThree.Components
     public abstract class GameComponent
     {
         protected SpriteBatch _spriteBatch;
-        protected Texture2D _texture;
 
         protected Rectangle Rectangle => 
             new Rectangle((int)StartPosition.X, (int)StartPosition.Y,
-                               _texture.Width, _texture.Height);
+                               Texture.Width, Texture.Height);
 
         public GameComponent(SpriteBatch spriteBatch, Texture2D texture)
         {
             _spriteBatch = spriteBatch;
-            _texture = texture;
+            Texture = texture;
         }
 
         public virtual Vector2 StartPosition { get; set; }
+        public Texture2D Texture { get; set; }
     }
 }

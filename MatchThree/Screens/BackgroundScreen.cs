@@ -32,7 +32,7 @@ namespace MatchThree.Screens
             {
                 for (int j = 0; j < Config.COLS; j++)
                 {
-                    _backgroundCell.StartPosition = _offset +  new Vector2(_backgroundCell.Width * i, _backgroundCell.Height * j);
+                    _backgroundCell.StartPosition = _offset +  new Vector2(_backgroundCell.Width * j, _backgroundCell.Height * i);
                     _backgroundCell.Draw();
                 }
             }
