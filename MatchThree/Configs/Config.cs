@@ -7,5 +7,7 @@
 
         public static readonly int ROWS = 8;
         public static readonly int COLS = 8;
+
+        public static readonly int COUNT_FIGURES = 5;
     }
 }

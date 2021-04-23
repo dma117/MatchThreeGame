@@ -70,8 +70,8 @@ namespace MatchThree.Managers
                 case GameState.InGame:
                     _screens = new List<Screen>()
                     {
-                        new GameScreen(_contentManager, _spriteBatch),
-                        new BackgroundScreen(_contentManager, _spriteBatch)
+                        new BackgroundScreen(_contentManager, _spriteBatch),
+                        new GameScreen(_contentManager, _spriteBatch)
                     };
                     break;
                 case GameState.End:
