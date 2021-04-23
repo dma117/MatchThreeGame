@@ -68,7 +68,11 @@ namespace MatchThree.Managers
                     _screens = new List<Screen>() { new MenuScreen(_contentManager, _spriteBatch) };
                     break;
                 case GameState.InGame:
-                    _screens = new List<Screen>() { new GameScreen(_contentManager, _spriteBatch) };
+                    _screens = new List<Screen>()
+                    {
+                        new GameScreen(_contentManager, _spriteBatch),
+                        new BackgroundScreen(_contentManager, _spriteBatch)
+                    };
                     break;
                 case GameState.End:
                     //_screens = new List<Screen>() { new GameScreen(_contentManager, _spriteBatch) }; // TODO (add a screen for ending the game)

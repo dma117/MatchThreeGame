@@ -5,8 +5,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MatchThree.Screens
 {
+    public enum CellType
+    {
+        Circle,
+        Cube,
+        Diamond,
+        Rectangle,
+        Triangle
+    }
 
-    class GameScreen : Screen
+    public class GameScreen : Screen
     {
         public GameScreen(ContentManager contentManager, SpriteBatch spriteBatch) : base(contentManager, spriteBatch)
         {

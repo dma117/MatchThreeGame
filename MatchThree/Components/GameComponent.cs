@@ -22,7 +22,5 @@ namespace MatchThree.Components
         }
 
         public virtual Vector2 StartPosition { get; set; }
-
-        public virtual void Hovering() { } 
     }
 }

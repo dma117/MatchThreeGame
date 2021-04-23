@@ -14,7 +14,7 @@ namespace MatchThree.Screens
         Deleted
     }
 
-    abstract class Screen
+    public abstract class Screen
     {
         protected ContentManager _contentManager;
         protected readonly SpriteBatch _spriteBatch;

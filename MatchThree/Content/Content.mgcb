@@ -20,6 +20,18 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/font.spritefont
 
+#begin sprites/back_rectangle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/back_rectangle.png
+
 #begin sprites/button.png
 /importer:TextureImporter
 /processor:TextureProcessor

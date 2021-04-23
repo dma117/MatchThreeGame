@@ -78,7 +78,5 @@ namespace MatchThree.Components
 
 			return new Vector2(x, y);
 		}
-
-
 	}
 }

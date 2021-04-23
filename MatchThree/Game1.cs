@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MatchThree.Managers;
+using MatchThree.Configs;
 
 
 namespace MatchThree
@@ -15,6 +16,9 @@ namespace MatchThree
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = Config.WIDTH_SCREEN;
+            _graphics.PreferredBackBufferHeight = Config.HEIGHT_SCREEN;
+            
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
