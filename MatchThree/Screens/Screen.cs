@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using MatchThree.Components;
 
 namespace MatchThree.Screens
 {
@@ -14,7 +15,7 @@ namespace MatchThree.Screens
         Deleted
     }
 
-    public abstract class Screen
+    public abstract class Screen : IDrawUpdate
     {
         protected ContentManager _contentManager;
         protected readonly SpriteBatch _spriteBatch;

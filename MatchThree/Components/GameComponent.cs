@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace MatchThree.Components
 {
-    public abstract class GameComponent
+    public abstract class GameComponent : IDrawUpdate
     {
         protected SpriteBatch _spriteBatch;
 
@@ -22,5 +19,9 @@ namespace MatchThree.Components
 
         public virtual Vector2 StartPosition { get; set; }
         public Texture2D Texture { get; set; }
+
+        public abstract void Draw(GameTime gameTime);
+
+        public abstract void Update(GameTime gameTime);
     }
 }

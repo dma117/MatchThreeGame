@@ -32,8 +32,8 @@ namespace MatchThree.Components
 
 		public event EventHandler OnClick;
 
-		public void Draw(GameTime gameTime)
-		{
+        public override void Draw(GameTime gameTime)
+        {
 			_spriteBatch.Begin();
 
 			if (_isHovering)
@@ -49,8 +49,8 @@ namespace MatchThree.Components
 			_spriteBatch.End();
 		}
 
-		public void Update(GameTime gameTime)
-		{
+        public override void Update(GameTime gameTime)
+        {
 			var mouseRectangle = new Rectangle(Mouse.GetState().X, Mouse.GetState().Y, 1, 1);
 
 			if (mouseRectangle.Intersects(Rectangle))
@@ -65,13 +65,13 @@ namespace MatchThree.Components
 			_previousMouseState = _currentMouseState;
 			_currentMouseState = Mouse.GetState().LeftButton;
 
-			if (_currentMouseState == ButtonState.Pressed && _previousMouseState == ButtonState.Pressed)
+			if (_currentMouseState == ButtonState.Released && _previousMouseState == ButtonState.Pressed)
 			{
 				OnClick?.Invoke(this, null);
 			}
 		}
 
-		private Vector2 GetTextPosition()
+        private Vector2 GetTextPosition()
 		{
 			var x = (StartPosition.X + Rectangle.Width / 2) - _font.MeasureString(_text).X / 2;
 			var y = (StartPosition.Y + Rectangle.Height / 2) - _font.MeasureString(_text).Y / 2;

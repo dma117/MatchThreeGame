@@ -10,17 +10,12 @@ namespace MatchThree.Components
 
         public int Width => Texture.Width;
         public int Height => Texture.Height;
-
-        public void Draw()
+        public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
             _spriteBatch.Draw(Texture, Rectangle, Color.White);
             _spriteBatch.End();
         }
-
-        public void Update()
-        {
-
-        }
+        public override void Update(GameTime gameTime) { }
     }
 }
