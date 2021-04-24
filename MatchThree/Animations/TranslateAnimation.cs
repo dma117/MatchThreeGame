@@ -1,5 +1,6 @@
 ﻿using MatchThree.Components;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace MatchThree.Animations
@@ -22,6 +23,7 @@ namespace MatchThree.Animations
         {
             if (_figure.StartPosition == Destination)
             {
+                _figure.IsMoving = false;
                 OnAnimationEnded?.Invoke(this, null);
             }
 

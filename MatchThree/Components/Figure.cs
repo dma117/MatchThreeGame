@@ -22,6 +22,7 @@ namespace MatchThree.Components
         public Color Color { get; set; } 
 
         public event EventHandler Clicked;
+        public bool IsMoving;
 
         public bool Match(Figure other)
         {

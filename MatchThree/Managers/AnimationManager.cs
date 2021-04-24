@@ -20,14 +20,19 @@ namespace MatchThree.Managers
 
         public void AddTranslateAnimation()
         {
+            foreach(var figure in _figures)
+            {
+                figure.IsMoving = true;
+            }
+
             var posFirst = _figures[0].StartPosition;
             var posSecond = _figures[1].StartPosition;
 
             var animationFirst = new TranslateAnimation(_figures[0], 100, posSecond);
-            animationFirst.OnAnimationEnded += (o, e) => _animations.Remove(animationFirst);
+            animationFirst.OnAnimationEnded += EndAnimation;
 
             var animationSecond = new TranslateAnimation(_figures[1], 100, posFirst);
-            animationSecond.OnAnimationEnded += (o, e) => _animations.Remove(animationSecond);
+            animationSecond.OnAnimationEnded += EndAnimation;
 
             _animations.AddRange(new List<Animation>() { animationFirst, animationSecond });
         }
@@ -45,5 +50,15 @@ namespace MatchThree.Managers
         }
 
         public void Update(GameTime gameTime) { }
+
+        private void EndAnimation(object obj, EventArgs args)
+        {
+            var animation = obj as Animation;
+
+            if (animation != null)
+            {
+                _animations.Remove(animation);
+            }
+        }
     }
 }

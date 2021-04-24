@@ -16,7 +16,8 @@ namespace MatchThree.Screens
         Initial,
         Choosing,
         Placing,
-        Matching
+        Matching,
+        Refreshing
     }
 
     public class GameScreen : Screen
@@ -50,8 +51,6 @@ namespace MatchThree.Screens
             {
                 cell.Draw(gameTime);
                 _animationManager.Draw(gameTime);
-                _animationManager.Draw(gameTime);
-
             }
         }
 
@@ -73,32 +72,43 @@ namespace MatchThree.Screens
                     }
                     if (_chosenFigures.Count == 2)
                     {
-                        _currentGameState = GameState.Placing;
+                        if (CanBeMatched(_chosenFigures[0], _chosenFigures[1]))
+                        {
+                            _currentGameState = GameState.Placing;
+                            SwapFigures(_chosenFigures[0], _chosenFigures[1]);
+                            _animationManager.AddTranslateAnimation();
+                        }
+                        else
+                        {
+                            foreach (var figure in _chosenFigures)
+                            {
+                                figure.Color = Color.White;
+                            }
+
+                            _currentGameState = GameState.Initial;
+                            _chosenFigures.Clear();
+                        }
                     }
                     break;
                 case GameState.Placing:
-                    if (CanBeMatched(_chosenFigures[0], _chosenFigures[1]))
+                    var flag = true; // all figures are not moving
+
+                    foreach (var figure in _chosenFigures)
+                    {
+                        if (figure.IsMoving)
+                        {
+                            flag = false;
+                        }
+                    }
+
+                    if (flag)
                     {
                         _currentGameState = GameState.Matching;
                     }
-                    else
-                    {
-                        foreach (var figure in _chosenFigures)
-                        {
-                            figure.Color = Color.White;
-                        }
 
-                        _currentGameState = GameState.Initial;
-                        _chosenFigures.Clear();
-                    }
+
                     break;
                 case GameState.Matching:
-                    SwapFigures(_chosenFigures[0], _chosenFigures[1]);
-                    //animation place in another position (change coordinates)
-                    //for each figure.ChangePosition(vector2 destination)
-
-                    _animationManager.AddTranslateAnimation();
-
                     var matchedFigures = Matched(_chosenFigures[0], _chosenFigures[1]);
                     
                     if (matchedFigures.Count == 0)
@@ -111,11 +121,7 @@ namespace MatchThree.Screens
 
                         SwapFigures(_chosenFigures[0], _chosenFigures[1]);
 
-                        var tmp = _chosenFigures[0];
-                        _chosenFigures[0] = _chosenFigures[1];
-                        _chosenFigures[1] = tmp;
-                        //animation place in another position (change coordinats)
-                        //for each figure.ChangePosition(vector2 destination)
+                        _currentGameState = GameState.Refreshing;
                         _animationManager.AddTranslateAnimation();
                     }
                     else
@@ -128,13 +134,39 @@ namespace MatchThree.Screens
                             //random new figures where it needs
                             //don't forget to add them at right index in _cells
                         }
+
+                        _currentGameState = GameState.Initial;
+                        _chosenFigures.Clear();
+                    }
+                    break;
+                case GameState.Refreshing:
+                    //animation place in another position (change coordinats)
+                    //for each figure.ChangePosition(vector2 destination)
+                    
+                    if (!Moving())
+                    {
+                        _currentGameState = GameState.Initial;
+                        _chosenFigures.Clear();
                     }
 
-                    _currentGameState = GameState.Initial;
-                    _chosenFigures.Clear();
-
                     break;
+
             }
+        }
+
+        private bool Moving()
+        {
+            var flag = false; // all figures are moving
+
+            foreach (var figure in _chosenFigures)
+            {
+                if (!figure.IsMoving)
+                {
+                    flag = true;
+                }
+            }
+
+            return flag;
         }
 
         private void SwapFigures(Figure first, Figure second)
@@ -145,6 +177,8 @@ namespace MatchThree.Screens
             var tmp = _cells[indexFirst];
             _cells[indexFirst] = _cells[indexSecond];
             _cells[indexSecond] = tmp;
+
+
         }
 
         private void GenerateCells()
