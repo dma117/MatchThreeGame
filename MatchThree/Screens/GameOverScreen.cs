@@ -13,17 +13,25 @@ namespace MatchThree.Screens
     public class GameOverScreen : Screen
     {
         private SpriteFont _font;
-        private Texture2D _texture;
+        private Cell _background;
         private Button _okButton;
 
         public GameOverScreen(ContentManager contentManager, SpriteBatch spriteBatch) : base(contentManager, spriteBatch)
         {
             _font = contentManager.Load<SpriteFont>("fonts/font");
-            _texture = contentManager.Load<Texture2D>("sprites/game_over");
+            var textureGameOver = contentManager.Load<Texture2D>("sprites/game_over");
+            var textureButton = _contentManager.Load<Texture2D>("sprites/button");
 
-            _okButton = new Button(spriteBatch, _texture, _font, "OK")
+            _background = new Cell(_spriteBatch, textureGameOver)
             {
-                StartPosition = new Vector2(Config.WIDTH_SCREEN / 2 - _texture.Width / 2, Config.HEIGHT_SCREEN / 2 - _texture.Height / 2),
+                StartPosition = new Vector2((Config.WIDTH_SCREEN - textureGameOver.Width) / 2,
+                                            (Config.HEIGHT_SCREEN - textureGameOver.Height) / 2)
+            };
+
+            _okButton = new Button(spriteBatch, textureButton, _font, "OK")
+            {
+                StartPosition = new Vector2((Config.WIDTH_SCREEN - textureButton.Width) / 2,
+                                            (Config.HEIGHT_SCREEN - textureButton.Height) / 2),
                 MainColor = Color.Yellow,
                 HoveredColor = Color.Gray
             };
@@ -35,6 +43,7 @@ namespace MatchThree.Screens
 
         public override void Draw(GameTime gameTime)
         {
+            _background.Draw(gameTime);
             _okButton.Draw(gameTime);
         }
 
