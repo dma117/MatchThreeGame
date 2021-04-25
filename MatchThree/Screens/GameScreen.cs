@@ -64,9 +64,11 @@ namespace MatchThree.Screens
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(_font, "Score: " + _score, new Vector2(20, 20), Color.Black);
-            _spriteBatch.DrawString(_font, "Time: " + _timer.Value.Seconds, new Vector2(20, 40), Color.Black);
+            _spriteBatch.DrawString(_font, "Score: " + _score, new Vector2(20, 20), 
+                                    Color.Black, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
 
+            _spriteBatch.DrawString(_font, "Time: " + _timer.Value.Seconds, new Vector2(20, 50), 
+                                    Color.Black, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 0);
             _spriteBatch.End();
 
             foreach(var cell in _cells)
