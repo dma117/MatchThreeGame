@@ -113,6 +113,12 @@ namespace MatchThree.Screens
                         {
                             _currentGameState = GameState.Placing;
                             SwapFigures(_chosenFigures[0], _chosenFigures[1]);
+
+                            foreach (var figure in _chosenFigures)
+                            {
+                                figure.Color = Color.White;
+                            }
+
                             _animationManager.AddSwapAnimation(_chosenFigures[0], _chosenFigures[1]);
                         }
                         else
