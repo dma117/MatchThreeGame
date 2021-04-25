@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using MatchThree.Components;
 using System;
 using System.Linq;
-using MatchThree.Animations;
 using MatchThree.Managers;
+
 
 namespace MatchThree.Screens
 {
@@ -105,10 +105,6 @@ namespace MatchThree.Screens
                 case GameState.Initial:
                     break;
                 case GameState.Choosing:
-                    foreach(var figure in _chosenFigures)
-                    {
-                        //animation of choosing
-                    }
                     if (_chosenFigures.Count == 2)
                     {
                         if (CanBeSwapped(_chosenFigures[0], _chosenFigures[1]))
@@ -138,7 +134,7 @@ namespace MatchThree.Screens
                 case GameState.Placing:
                     if (NoMoving())
                     {
-                        Fill();
+                        FillEmptyCells();
                         _currentGameState = GameState.Matching;
                     }   
                     break;
@@ -181,7 +177,6 @@ namespace MatchThree.Screens
                     }
 
                     break;
-
             }
         }
 
@@ -207,7 +202,7 @@ namespace MatchThree.Screens
             return matches;
         }
 
-        private void Fill()
+        private void FillEmptyCells()
         {
             for (int i = 0; i < _size; i++)
             {
@@ -235,7 +230,7 @@ namespace MatchThree.Screens
                 {
                     if (_cells[i] == null)
                     {
-                        var count = Fall(i % Config.COLS, i);
+                        var count = FallFigures(i % Config.COLS, i);
                         bound += (count * Config.ROWS);
                     }
                 }
@@ -244,7 +239,7 @@ namespace MatchThree.Screens
             }
         }
 
-        private int Fall(int start, int end)
+        private int FallFigures(int start, int end)
         {
             int height = 0;
 
@@ -336,7 +331,7 @@ namespace MatchThree.Screens
             return false;
         }
 
-        private List<Figure> Matched(Figure first, Figure second) // поменять элементы перед тем как вызывать метод
+        private List<Figure> Matched(Figure first, Figure second)
         {
             List<Figure> figures = new List<Figure>();
             

@@ -10,6 +10,6 @@
 
         public static readonly int COUNT_FIGURES = 5;
 
-        public static readonly int TIME = 2;
+        public static readonly int TIME = 60;
     }
 }
