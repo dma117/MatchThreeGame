@@ -69,7 +69,10 @@ namespace MatchThree.Components
 
 			if (_currentMouseState == ButtonState.Released && _previousMouseState == ButtonState.Pressed)
 			{
-				OnClick?.Invoke(this, null);
+				if (mouseRectangle.Intersects(Rectangle))
+                {
+					OnClick?.Invoke(this, null);
+				}
 			}
 		}
 
