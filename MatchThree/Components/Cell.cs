@@ -6,6 +6,7 @@ namespace MatchThree.Components
 {
     public class Cell : GameComponent
     {
+        public Cell() { }
         public Cell(SpriteBatch spriteBatch, Texture2D texture) : base(spriteBatch, texture) { }
 
         public int Width => Texture.Width;

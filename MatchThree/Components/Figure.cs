@@ -12,6 +12,8 @@ namespace MatchThree.Components
         private ButtonState _currentMouseState;
         private ButtonState _previousMouseState;
 
+        public Figure() { }
+
         public Figure(SpriteBatch spriteBatch, Texture2D texture, FigureType type) : base(spriteBatch, texture) 
         {
             Type = type;
@@ -26,6 +28,11 @@ namespace MatchThree.Components
 
         public bool Match(Figure other)
         {
+            if (other == null)
+            {
+                return false;
+            }
+
             return this.Type == other.Type;
         }
 

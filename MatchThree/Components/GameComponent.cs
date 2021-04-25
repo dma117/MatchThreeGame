@@ -10,7 +10,9 @@ namespace MatchThree.Components
         protected Rectangle Rectangle => 
             new Rectangle((int)StartPosition.X, (int)StartPosition.Y,
                                Texture.Width, Texture.Height);
-
+        
+        public GameComponent() { }
+        
         public GameComponent(SpriteBatch spriteBatch, Texture2D texture)
         {
             _spriteBatch = spriteBatch;

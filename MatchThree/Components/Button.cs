@@ -14,6 +14,8 @@ namespace MatchThree.Components
 		private ButtonState _currentMouseState;
 		private ButtonState _previousMouseState;
 
+		public Button() { }
+
 		public Button(SpriteBatch spriteBatch, Texture2D texture) : base(spriteBatch, texture)
 		{
 			MainColor = Color.White;
