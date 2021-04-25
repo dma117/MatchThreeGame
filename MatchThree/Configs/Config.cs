@@ -9,5 +9,7 @@
         public static readonly int COLS = 8;
 
         public static readonly int COUNT_FIGURES = 5;
+
+        public static readonly int TIME = 60;
     }
 }

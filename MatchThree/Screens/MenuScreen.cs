@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using MatchThree.Components;
+using MatchThree.Configs;
 
 
 namespace MatchThree.Screens
@@ -17,7 +18,7 @@ namespace MatchThree.Screens
 
             _menuButton = new Button(spriteBatch, texture, font, "Start Game!")
             {
-                StartPosition = new Vector2(100, 100),
+                StartPosition = new Vector2(Config.WIDTH_SCREEN / 2, Config.HEIGHT_SCREEN / 2),
                 MainColor = Color.Yellow,
                 HoveredColor = Color.Gray
             };

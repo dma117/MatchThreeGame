@@ -45,10 +45,9 @@ namespace MatchThree.Managers
 
         public void Update(GameTime gameTime)
         {
-           
-            foreach (var screen in _screens)
+            for (int i = 0; i < _screens.Count; i++)
             {
-                if (screen.CurrentScreenState == ScreenState.Deleted)
+                if (_screens[i].CurrentScreenState == ScreenState.Deleted)
                 {
                     _screens.Clear();
                     ChangeScreen(++_currentGameState);
@@ -56,7 +55,7 @@ namespace MatchThree.Managers
                     break;
                 }
 
-                screen.Update(gameTime);
+                _screens[i].Update(gameTime);
             }
         }
 
@@ -68,14 +67,20 @@ namespace MatchThree.Managers
                     _screens = new List<Screen>() { new MenuScreen(_contentManager, _spriteBatch) };
                     break;
                 case GameState.InGame:
-                    _screens = new List<Screen>()
+                    var game = new GameScreen(_contentManager, _spriteBatch);
+                    game.OnEndGame += (o, e) => ChangeScreen(++_currentGameState);
+
+                    _screens = new List<Screen>() 
                     {
                         new BackgroundScreen(_contentManager, _spriteBatch),
-                        new GameScreen(_contentManager, _spriteBatch)
+                        game
                     };
                     break;
                 case GameState.End:
-                    //_screens = new List<Screen>() { new GameScreen(_contentManager, _spriteBatch) }; // TODO (add a screen for ending the game)
+                    var gameOver = new GameOverScreen(_contentManager, _spriteBatch);
+                    gameOver.OnGameRestarted += (o, e) => ChangeScreen(_currentGameState = GameState.Menu);
+
+                    _screens.Add(gameOver);
                     break;
                 default:
                     break;

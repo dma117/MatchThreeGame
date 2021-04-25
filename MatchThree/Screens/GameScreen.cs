@@ -31,6 +31,11 @@ namespace MatchThree.Screens
 
         private GameState _currentGameState;
         private AnimationManager _animationManager;
+        private Timer _timer;
+
+        private int _score;
+        private SpriteFont _font;
+        private bool _endGame;
 
         public GameScreen(ContentManager contentManager, SpriteBatch spriteBatch) : base(contentManager, spriteBatch)
         {
@@ -40,17 +45,30 @@ namespace MatchThree.Screens
             _textures[(int)FigureType.Rectangle] = contentManager.Load<Texture2D>("sprites/rectangle");
             _textures[(int)FigureType.Triangle] = contentManager.Load<Texture2D>("sprites/triangle");
 
+            _font = contentManager.Load<SpriteFont>("fonts/font");
+
             _offset = new Vector2(10, Config.HEIGHT_SCREEN - _textures[0].Height * Config.COLS - 15);
             _size = Config.ROWS * Config.COLS;
             _cells = new List<Figure>();
             _chosenFigures = new List<Figure>();
             _animationManager = new AnimationManager(_chosenFigures);
 
+            _timer = new Timer();
+            _timer.Finished += EndGame;
+
             GenerateCells();
         }
 
+        public event EventHandler OnEndGame;
+
         public override void Draw(GameTime gameTime)
         {
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(_font, "Score: " + _score, new Vector2(20, 20), Color.Black);
+            _spriteBatch.DrawString(_font, "Time: " + _timer.Value.Seconds, new Vector2(20, 40), Color.Black);
+
+            _spriteBatch.End();
+
             foreach(var cell in _cells)
             {
                 if (cell != null)
@@ -62,8 +80,16 @@ namespace MatchThree.Screens
             }
         }
 
+        private void EndGame(object obj, EventArgs args)
+        {
+            OnEndGame?.Invoke(this, null);
+            _endGame = true;
+        }
+
         public override void Update(GameTime gameTime) 
         {
+            _timer.Update(gameTime);
+
             foreach (var cell in _cells)
             {
                 if (cell != null)
@@ -110,7 +136,8 @@ namespace MatchThree.Screens
                     break;
                 case GameState.Matching:
                     var matches = FindMatches();
-                    
+                    _score += matches.Count;
+
                     if (matches.Count == 0)
                     {
                         if (_chosenFigures.Count != 0)
@@ -126,11 +153,11 @@ namespace MatchThree.Screens
                         foreach (var figure in matches)
                         {
                             int pos = _cells.IndexOf(figure);
+
                             if (pos > 0)
                             {
                                 _cells[pos] = null;
                             }
-                           
                         }
 
                         SetNewRandomFigures();
@@ -205,12 +232,6 @@ namespace MatchThree.Screens
                     }
                 }
 
-                /*for (int col = j; col < bound; col += Config.ROWS)
-                {
-                    _cells[col] = GetRandomFigure();
-                    _cells[col].StartPosition = _offset + new Vector2(_cells[col].Width * (col % Config.COLS), _cells[col].Height * (col / Config.ROWS));
-                }*/
-
                 indexFigure--;
             }
         }
@@ -237,104 +258,6 @@ namespace MatchThree.Screens
             }
 
             return height;
-        }
-
-        private void FallFig(int start, int end)
-        {
-            int count = 0;
-            int offset = 1;
-
-            while (end > 0 && end != start)
-            {
-                if (_cells[end] == null)
-                {
-                    count = CountNulls(ref start, ref end);
-                    offset = count + 1;
-                }
-                else if (count != 0)
-                {
-                    var direction = _cells[end].StartPosition + new Vector2(0, _cells[end].Height * offset);
-                    _animationManager.AddTranslation(_cells[end], direction);
-
-                    _cells[end + Config.ROWS] = _cells[end];
-                    _cells[end] = null;
-                }
-
-                end -= Config.ROWS;
-            }
-        }
-
-        private int CountNulls(ref int start, ref int end)
-        {
-            int count = 0;
-
-            while (end != start && end > 0 && _cells[end] == null)
-            {
-                count++;
-                end -= Config.ROWS;
-            }
-
-            return count;
-        }
-
-        private void FallFigures(int start, int end)
-        {
-            var countCells = Config.ROWS * Config.COLS;
-            var current = _cells[end]; // null
-            var prev = _cells[end];
-
-            if (end + Config.ROWS < countCells)
-            {
-                prev = _cells[end + Config.ROWS];
-            }
-            else
-            {
-                end -= Config.ROWS;
-            }
-
-            var countNewFigures = 1;
-            int y_offset = 1;
-
-            for (int i = end; i >= start; i -= Config.ROWS)
-            {
-                current = _cells[i];
-
-                if (current == null)
-                {
-                    y_offset++;
-                    countNewFigures++;
-
-                    if (prev != null)
-                    {
-                        y_offset = 1;
-                    }
-                }
-
-                if (current != null && prev == null)
-                {
-                    var destination = new Vector2(_cells[i].StartPosition.X, _cells[i].StartPosition.Y + _cells[i].Height * y_offset);
-
-                    //var pos = _cells[i].StartPosition;
-                    //var destination = new Vector2(pos.X, pos.Y + 10);
-
-                    _animationManager.AddTranslation(_cells[i], destination);
-
-                    var replacedCell = i + Config.ROWS * (y_offset - 1);
-                    _cells[replacedCell] = _cells[i];
-                    _cells[i] = null;
-                }
-
-                prev = current;
-            }
-
-            /*for (int i = start, k = 0; countNewFigures > 0 && i < countCells; i += Config.ROWS, countNewFigures--, k++)
-            {
-                var figure = GetRandomFigure();
-                var position = _offset + new Vector2(start * figure.Texture.Width, k * figure.Texture.Height);
-
-                _cells[i] = figure;
-                _cells[i].StartPosition = position;
-            }*/
         }
 
         private bool NoMoving()
@@ -392,27 +315,9 @@ namespace MatchThree.Screens
                     cell.StartPosition = _offset + new Vector2(cell.Width * j, cell.Height * i);
                 }
             }
-        }
 
-        private List<Figure> GenerateCells(int count)
-        {
-            List<Figure> result = new List<Figure>();
-
-            if (count < 0)
-                return result;
-
-            var rand = new Random();
-
-            while (count-- != 0)
-            {
-                var indexTexture = rand.Next(0, _textures.Length);
-                var cell = new Figure(_spriteBatch, _textures[indexTexture], (FigureType)indexTexture);
-                cell.Clicked += FigureOnClick;
-
-                result.Add(cell);
-            }
-
-            return result;
+            _timer.SetTimer(new TimeSpan(0, 0, Config.TIME));
+            _timer.Start();
         }
 
         private bool Matched(int index)
@@ -516,6 +421,9 @@ namespace MatchThree.Screens
 
         private void FigureOnClick(object obj, EventArgs args)
         {
+            if (_endGame)
+                return;
+
             var figure = obj as Figure;
 
             if (figure != null && NoMoving())
