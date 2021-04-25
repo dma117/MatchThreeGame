@@ -107,25 +107,20 @@ namespace MatchThree.Screens
                 case GameState.Choosing:
                     if (_chosenFigures.Count == 2)
                     {
+                        foreach (var figure in _chosenFigures)
+                        {
+                            figure.Color = Color.White;
+                        }
+
                         if (CanBeSwapped(_chosenFigures[0], _chosenFigures[1]))
                         {
                             _currentGameState = GameState.Placing;
                             SwapFigures(_chosenFigures[0], _chosenFigures[1]);
 
-                            foreach (var figure in _chosenFigures)
-                            {
-                                figure.Color = Color.White;
-                            }
-
                             _animationManager.AddSwapAnimation(_chosenFigures[0], _chosenFigures[1]);
                         }
                         else
                         {
-                            foreach (var figure in _chosenFigures)
-                            {
-                                figure.Color = Color.White;
-                            }
-
                             _currentGameState = GameState.Initial;
                             _chosenFigures.Clear();
                         }
@@ -158,7 +153,7 @@ namespace MatchThree.Screens
                         {
                             int pos = _cells.IndexOf(figure);
 
-                            if (pos > 0)
+                            if (pos >= 0)
                             {
                                 _cells[pos] = null;
                             }
